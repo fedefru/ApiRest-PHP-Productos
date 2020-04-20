@@ -1,5 +1,9 @@
 <?php
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Content-type: application/x-www-form-urlencoded');
+
 require_once 'vendor/autoload.php';
 
 $app = new \Slim\Slim();
@@ -86,14 +90,12 @@ $app->post('/update-producto/:id', function($id) use($db, $app){
             "descripcion =  '{$data['descripcion']}', ";
 
         if(isset($data['imagen'])){
-            $sql .="image = '{$data['imagen']}', ";
+            $sql .="imagen = '{$data['imagen']}', ";
         }
 
-    $sql .= "precio = '{$data['precio']}' WHERE id = {$id} ;";
+    $sql .= "precio = '{$data['precio']}' WHERE id = {$id} ";
 
     $query = $db->query($sql);
-
-    var_dump($sql);
     
     if($query){
         $result = array(
@@ -134,7 +136,7 @@ $app->post('/upload-file', function() use($db, $app){
                 'status'=> 'success',
                 'code' => 200,
                 'message' => 'El archivo se ha subido correctamente',
-                'file-name' => $filename
+                'filename' => $filename
             );
         }
     }
